@@ -1,0 +1,129 @@
+*{
+    margin: 0;
+    padding: 0;
+    font-family: 'Montserrat';
+    font-weight: normal;
+	font-style: normal;
+}
+
+body{
+    background-color: #F5F5F5;
+    padding-top: 40px;
+}
+
+svg path{
+    stroke: white;
+    margin: 0 auto;
+}
+
+#root{
+    width: 900px;
+    background-color: white;
+    box-shadow: 4px 4px 4px rgba(0, 0, 0, 0.25);
+    margin: 0 auto;
+    border-radius: 33px;
+    padding: 38px 97px 38px 97px;
+    box-sizing: border-box;
+    font-family: 'Montserrat';
+    font-style: normal;
+    font-weight: 700;
+    font-size: 25px;
+}
+
+h2{
+    text-align: center;
+    margin-bottom: 30px;
+}
+
+input{
+    margin-bottom: 10px;
+    width: 100%;
+    height: 34px;
+    border-radius: 6px;
+    background-color: white;
+    font-size: 18px;
+    color: #333333;
+    border: 1px solid #AEAEAE;
+    padding: 6px 0 6px 10px;
+}
+
+.room{
+    position: relative;
+}
+
+#exit-button{
+    position: absolute;
+    left: 90%;
+}
+
+.chat{
+    min-height: 600px;
+    max-height: 600px;
+    overflow: auto;
+}
+
+.chat::-webkit-scrollbar{
+    width: 0.5em;
+}
+  
+.chat::-webkit-scrollbar-track{
+    background-color: white;
+}
+  
+.chat::-webkit-scrollbar-thumb{
+    background-color: white;
+}
+
+#chat-room-form{
+    display: flex;
+}
+
+#chat-room-form input{
+    margin-top: 10px;
+    box-sizing: border-box;
+    width: 95%;
+}
+
+#chat-room-form button{
+    margin-top: 10px;
+    height: 34px;
+    box-sizing: border-box;
+    background-color: white;
+    width: 5%;
+    padding: 0;
+    padding-top: 3px;
+}
+
+button{
+    cursor: pointer;
+    text-decoration: none;
+    display: table;
+    font-family: 'Montserrat';
+    font-weight: 400;
+    font-size: 24px;
+    color: #FFFFFF;
+    height: 42px;
+    background: #FF9900;
+    border-radius: 10px;
+    padding: 7px 28px 7px 28px;
+    text-align: center;
+    margin: 0 auto;
+    border: none;
+}
+
+.self-message, .other-message{
+    box-sizing: border-box;
+    word-wrap: break-word;
+    width: fit-content;
+    max-width: 50%;
+    background: #EAEAEA;
+    border-radius: 6px;
+    margin: 10px 0;
+    padding: 5px 5px 5px 5px;
+    font-size: 18px;
+}
+
+.self-message{
+    background-color: #FF9900;
+    margin-left: auto;
+}

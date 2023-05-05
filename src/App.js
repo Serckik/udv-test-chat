@@ -1,25 +1,80 @@
-import logo from './logo.svg';
-import './App.css';
+import React from "react";
+import './css/App.css';
+import EnterForm from './components/RoomEnterForm';
+import Room from "./components/Room";
 
-function App() {
-  return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
-  );
+class App extends React.Component{
+  constructor(props){
+      super(props)
+      this.state = {
+        roomName: "",
+        currentChat: []
+      };
+      this.EnterRoom = this.EnterRoom.bind(this);
+      this.UpdateChat = this.UpdateChat.bind(this);
+      this.ExitChat = this.ExitChat.bind(this);
+  }
+
+  componentDidMount() {
+    window.addEventListener('storage', this.UpdateChat);
+  }
+  
+  componentWillUnmount() {
+    window.removeEventListener('storage', this.UpdateChat);
+  }
+
+  render(){
+    return (
+      <div className="App">
+        <header className="App-header">
+  
+        </header>
+        <main className='App-main'>
+          <Room onUpdate={this.UpdateChat} onExit={this.ExitChat} chat={this.state.currentChat} roomName={this.state.roomName} user={this.state.user}/>
+          <EnterForm onEnter={this.EnterRoom} />
+        </main>
+      </div>
+    );
+  }
+
+  EnterRoom(roomName, chat, user){
+    this.setState({ 
+      roomName: roomName, 
+      currentChat: chat,
+      user: user
+    }, () =>{
+      console.log(this.state.roomName)
+      let div = document.querySelector('.chat')
+      div.scrollTop = div.scrollHeight;
+    });
+
+  }
+
+  UpdateChat(){
+    let isScrollDown = false
+    let div = document.querySelector('.chat')
+    if(Math.round(div.scrollTop) === (div.scrollHeight - div.clientHeight)){
+      isScrollDown = true
+    }
+    console.log('uwu')
+    this.setState({
+      currentChat: JSON.parse(localStorage.getItem(this.state.roomName))
+    }, () => {
+      if(isScrollDown){
+        div.scrollTop = div.scrollHeight;
+      }
+    })
+  }
+
+  ExitChat(){
+    this.setState({ 
+      roomName: '', 
+      currentChat: [],
+    }, () => {
+      document.getElementById("enter-room-form").hidden = false;
+    })
+  }
 }
+
 
 export default App;
