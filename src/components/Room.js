@@ -1,16 +1,26 @@
 import React from "react";
+import Emojis from "./emoji";
 
 class Room extends React.Component {
     constructor(props){
         super(props)
         this.state = {
-            text: ''
+            text: '',
+            showEmojiPicker: false
         }
         this.handleExitClick = this.handleExitClick.bind(this);
+        this.handleEmojiSelect = this.handleEmojiSelect.bind(this);
     }
 
     handleExitClick() {
         this.props.onExit();
+    }
+
+    handleEmojiSelect(EmojiClickData) {
+        console.log(EmojiClickData)
+        const { text } = this.state;
+        const updatedText = text + EmojiClickData.emoji;
+        this.setState({ text: updatedText });
     }
 
     render() {
@@ -51,13 +61,23 @@ class Room extends React.Component {
             <button
                 type="button"
                 onClick={() => {
+                    this.setState({showEmojiPicker: !this.state.showEmojiPicker });
+                }}
+            >
+                <svg xmlns="http://www.w3.org/2000/svg" width="28" height="28" fill="currentColor" viewBox="0 0 24 24">
+                    <path d="M8.44 14.3a.9.9 0 0 1 1.26.13c.01.02.2.22.53.43.38.24.97.49 1.77.49a3.3 3.3 0 0 0 1.77-.49c.2-.12.39-.26.53-.43a.9.9 0 0 1 1.4 1.13 4.04 4.04 0 0 1-.97.83 5.1 5.1 0 0 1-2.73.76 5.1 5.1 0 0 1-2.73-.76 3.99 3.99 0 0 1-.97-.83.9.9 0 0 1 .14-1.26Zm1.81-4.05a1.25 1.25 0 1 1-2.5 0 1.25 1.25 0 0 1 2.5 0ZM15 11.5A1.25 1.25 0 1 0 15 9a1.25 1.25 0 0 0 0 2.5Zm-3-9.4a9.9 9.9 0 1 0 0 19.8 9.9 9.9 0 0 0 0-19.8ZM3.9 12a8.1 8.1 0 1 1 16.2 0 8.1 8.1 0 0 1-16.2 0Z"></path>
+                </svg>
+            </button>
+            <button
+                type="button"
+                onClick={() => {
                     if(this.state.text === ''){
                         return
                     }
                     const id = existingData.length === 0 ? 1 : existingData[existingData.length - 1].id + 1;
                     const newData = [...existingData, { id: id, author: user, text: this.state.text }];
                     localStorage.setItem(roomName, JSON.stringify(newData));
-                    this.setState({ text: '' });
+                    this.setState({ text: '', showEmojiPicker: false});
                     onUpdate();
                 }}
             >
@@ -66,6 +86,7 @@ class Room extends React.Component {
                 </svg> 
             </button>
             </form>
+            <Emojis show={this.state.showEmojiPicker} onClick={this.handleEmojiSelect}/>
         </div>
         );
     }

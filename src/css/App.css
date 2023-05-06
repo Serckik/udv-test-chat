@@ -12,7 +12,7 @@ body{
 }
 
 svg path{
-    stroke: white;
+    fill: #FF9900;
     margin: 0 auto;
 }
 
@@ -94,7 +94,7 @@ input{
     padding-top: 3px;
 }
 
-button{
+button:not(.EmojiPickerReact button){
     cursor: pointer;
     text-decoration: none;
     display: table;
@@ -126,4 +126,10 @@ button{
 .self-message{
     background-color: #FF9900;
     margin-left: auto;
+}
+
+.EmojiPickerReact {
+    position: absolute !important;
+    left: 50%;
+    top: 32%;
 }

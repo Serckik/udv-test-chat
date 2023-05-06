@@ -43,9 +43,10 @@ class EnterForm extends React.Component {
     localStorage.setItem(roomName, JSON.stringify([]));
     console.log("комната создана");
   };
-
+  
   render() {
     const { user, roomName } = this.state;
+    console.log('xd')
     return (
       <form id="enter-room-form" onSubmit={this.handleSubmit}>
         <input
