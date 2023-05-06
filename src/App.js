@@ -56,7 +56,6 @@ class App extends React.Component{
     if(Math.round(div.scrollTop) === (div.scrollHeight - div.clientHeight)){
       isScrollDown = true
     }
-    console.log('uwu')
     this.setState({
       currentChat: JSON.parse(localStorage.getItem(this.state.roomName))
     }, () => {

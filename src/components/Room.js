@@ -1,15 +1,20 @@
 import React from "react";
 import Emojis from "./emoji";
+import Quote from "./quote";
+import Message from "./message";
 
 class Room extends React.Component {
     constructor(props){
         super(props)
         this.state = {
             text: '',
-            showEmojiPicker: false
+            showEmojiPicker: false,
+            isQuote: false,
+            quote: {}
         }
         this.handleExitClick = this.handleExitClick.bind(this);
         this.handleEmojiSelect = this.handleEmojiSelect.bind(this);
+        this.makeQuote = this.makeQuote.bind(this);
     }
 
     handleExitClick() {
@@ -17,11 +22,19 @@ class Room extends React.Component {
     }
 
     handleEmojiSelect(EmojiClickData) {
-        console.log(EmojiClickData)
         const { text } = this.state;
         const updatedText = text + EmojiClickData.emoji;
-        this.setState({ text: updatedText });
+        this.setState({ text: updatedText, showEmojiPicker:false });
     }
+
+    makeQuote(event){
+        const message = event.currentTarget
+        const author = message.querySelector('.current-message .author').textContent
+        const text = message.querySelector('.current-message .text').textContent
+        const data = {id: message.id, ownerMessage: author, quoteMessage: text}
+        this.setState({quote: data, isQuote: true})
+    }
+    
 
     render() {
         let { roomName, chat, user, onUpdate } = this.props;
@@ -38,13 +51,12 @@ class Room extends React.Component {
             <h2>Комната №{roomName} </h2>
             <div className="chat">
             {existingData.map((message) => (
-                <div className={message.author === user ? 'self-message' : 'other-message'} key={message.id}>
-                <p>
-                    {message.author} <br></br> {message.text}
-                </p>
+                <div id={message.id} className={message.author === user ? 'self-message' : 'other-message'} key={message.id} onClick={this.makeQuote}>
+                    <Message author={message.author} text={message.text} quote={message.quote}/>
                 </div>
             ))}
             </div>
+            <Quote isQuote={this.state.isQuote} quoteData={this.state.quote}/>
             <form
             id="chat-room-form"
             onSubmit={(e) => {
@@ -75,9 +87,15 @@ class Room extends React.Component {
                         return
                     }
                     const id = existingData.length === 0 ? 1 : existingData[existingData.length - 1].id + 1;
-                    const newData = [...existingData, { id: id, author: user, text: this.state.text }];
+                    let newData = []
+                    if(this.state.isQuote){
+                        newData = [...existingData, { id: id, author: user, text: this.state.text, quote: this.state.quote }];
+                    }
+                    else{
+                        newData = [...existingData, { id: id, author: user, text: this.state.text }];
+                    }
                     localStorage.setItem(roomName, JSON.stringify(newData));
-                    this.setState({ text: '', showEmojiPicker: false});
+                    this.setState({ text: '', showEmojiPicker: false, isQuote: false});
                     onUpdate();
                 }}
             >

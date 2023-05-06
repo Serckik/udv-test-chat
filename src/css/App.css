@@ -112,6 +112,7 @@ button:not(.EmojiPickerReact button){
 }
 
 .self-message, .other-message{
+    cursor: pointer;
     box-sizing: border-box;
     word-wrap: break-word;
     width: fit-content;
@@ -132,4 +133,8 @@ button:not(.EmojiPickerReact button){
     position: absolute !important;
     left: 50%;
     top: 32%;
+}
+
+.quote{
+    background-color: white;
 }

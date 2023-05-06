@@ -46,7 +46,6 @@ class EnterForm extends React.Component {
   
   render() {
     const { user, roomName } = this.state;
-    console.log('xd')
     return (
       <form id="enter-room-form" onSubmit={this.handleSubmit}>
         <input
