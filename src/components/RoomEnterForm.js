@@ -41,7 +41,6 @@ class EnterForm extends React.Component {
 
   createRoom = (roomName) => {
     localStorage.setItem(roomName, JSON.stringify([]));
-    console.log("комната создана");
   };
   
   render() {

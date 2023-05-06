@@ -61,7 +61,6 @@ class Room extends React.Component {
         }
         document.getElementById('enter-room-form')
         const existingData = chat || [];
-        console.log(existingData)
         return (
         <div className="room">
             <button id="exit-button" type="button" onClick={this.handleExitClick}>Выйти</button>
@@ -105,9 +104,7 @@ class Room extends React.Component {
                     }
                     const id = existingData.length === 0 ? 1 : existingData[existingData.length - 1].id + 1;
                     let newData = []
-                    console.log(this.state.selectedImage)
                     newData = [...existingData, { id: id, author: user, text: this.state.text, quote: this.state.quote, media: this.state.imageUrl }];
-                    console.log(newData)
                     localStorage.setItem(roomName, JSON.stringify(newData));
                     this.setState({ text: '', showEmojiPicker: false, isQuote: false, quote: {}, selectedImage: null, imageUrl:null} , () => {document.querySelector('.media-input').value = ''});
                     onUpdate();

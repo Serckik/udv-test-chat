@@ -9,7 +9,6 @@ class Media extends React.Component {
     }
     render() {
         const {media} = this.props;
-        console.log(media)
         if(media == null){
             return
         }
