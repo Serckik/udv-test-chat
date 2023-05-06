@@ -10,11 +10,14 @@ class Room extends React.Component {
             text: '',
             showEmojiPicker: false,
             isQuote: false,
-            quote: {}
+            quote: {},
+            selectedImage: null,
+            imageUrl:null
         }
         this.handleExitClick = this.handleExitClick.bind(this);
         this.handleEmojiSelect = this.handleEmojiSelect.bind(this);
         this.makeQuote = this.makeQuote.bind(this);
+        this.handleImageChange = this.handleImageChange.bind(this);
     }
 
     handleExitClick() {
@@ -27,11 +30,25 @@ class Room extends React.Component {
         this.setState({ text: updatedText, showEmojiPicker:false });
     }
 
+    handleImageChange(e){
+        const file = e.target.files[0];
+        const reader = new FileReader();
+        reader.onload = (event) => {
+            this.setState({ selectedImage: file, imageUrl: event.target.result });
+        };
+        reader.readAsDataURL(file);
+    }
+
     makeQuote(event){
         const message = event.currentTarget
         const author = message.querySelector('.current-message .author').textContent
         const text = message.querySelector('.current-message .text').textContent
-        const data = {id: message.id, ownerMessage: author, quoteMessage: text}
+        const media = message.querySelector('.current-message .textImage')
+        let src
+        if(media){
+            src = message.querySelector('.current-message .textImage').getAttribute('src')
+        }
+        const data = {id: message.id, ownerMessage: author, quoteMessage: text, media: src}
         this.setState({quote: data, isQuote: true})
     }
     
@@ -44,7 +61,7 @@ class Room extends React.Component {
         }
         document.getElementById('enter-room-form')
         const existingData = chat || [];
-
+        console.log(existingData)
         return (
         <div className="room">
             <button id="exit-button" type="button" onClick={this.handleExitClick}>Выйти</button>
@@ -52,7 +69,7 @@ class Room extends React.Component {
             <div className="chat">
             {existingData.map((message) => (
                 <div id={message.id} className={message.author === user ? 'self-message' : 'other-message'} key={message.id} onClick={this.makeQuote}>
-                    <Message author={message.author} text={message.text} quote={message.quote}/>
+                    <Message author={message.author} text={message.text} quote={message.quote} media={message.media}/>
                 </div>
             ))}
             </div>
@@ -88,14 +105,11 @@ class Room extends React.Component {
                     }
                     const id = existingData.length === 0 ? 1 : existingData[existingData.length - 1].id + 1;
                     let newData = []
-                    if(this.state.isQuote){
-                        newData = [...existingData, { id: id, author: user, text: this.state.text, quote: this.state.quote }];
-                    }
-                    else{
-                        newData = [...existingData, { id: id, author: user, text: this.state.text }];
-                    }
+                    console.log(this.state.selectedImage)
+                    newData = [...existingData, { id: id, author: user, text: this.state.text, quote: this.state.quote, media: this.state.imageUrl }];
+                    console.log(newData)
                     localStorage.setItem(roomName, JSON.stringify(newData));
-                    this.setState({ text: '', showEmojiPicker: false, isQuote: false});
+                    this.setState({ text: '', showEmojiPicker: false, isQuote: false, quote: {}, selectedImage: null, imageUrl:null} , () => {document.querySelector('.media-input').value = ''});
                     onUpdate();
                 }}
             >
@@ -104,6 +118,7 @@ class Room extends React.Component {
                 </svg> 
             </button>
             </form>
+            <input className="media-input" type="file" accept="image/*" onChange={this.handleImageChange} />
             <Emojis show={this.state.showEmojiPicker} onClick={this.handleEmojiSelect}/>
         </div>
         );

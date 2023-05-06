@@ -1,4 +1,5 @@
 import React from "react";
+import Media from "./media";
 
 class Quote extends React.Component {
 
@@ -9,7 +10,7 @@ class Quote extends React.Component {
             return (
                 <div className="quote">
                     <p>
-                        {quoteData.ownerMessage} <br></br> {quoteData.quoteMessage}
+                        {quoteData.ownerMessage} <br></br> <Media  media={quoteData.media}/> <br></br> {quoteData.quoteMessage}
                     </p>
                 </div>
             )
