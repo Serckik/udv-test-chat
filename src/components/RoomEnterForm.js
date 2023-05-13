@@ -5,7 +5,8 @@ class EnterForm extends React.Component {
     super(props);
     this.state = {
       user: "",
-      roomName: "",
+      roomName: this.props.roomName !== null ? this.props.roomName : '',
+      isVisible: this.props.roomName !== null ? false : true 
     };
   }
 
@@ -16,13 +17,12 @@ class EnterForm extends React.Component {
     });
   };
 
-  hideForm = () => {
-    document.getElementById("enter-room-form").hidden = true;
-  };
-
   handleSubmit = (e) => {
     e.preventDefault();
     const { user, roomName } = this.state;
+    if(user === '' || roomName === ''){
+      return
+    }
     if (localStorage.getItem(roomName)) {
       const chat = JSON.parse(localStorage.getItem(roomName));
       this.props.onEnter(roomName, chat, user);
@@ -31,12 +31,13 @@ class EnterForm extends React.Component {
       this.createRoom(roomName);
       this.props.onEnter(roomName, [], user);
     }
-
+    let newData = { user: user, roomName: roomName };
+    localStorage.setItem('userData', JSON.stringify(newData));
     this.setState({
       user: "",
       roomName: "",
+      isVisible: false
     });
-    this.hideForm()
   };
 
   createRoom = (roomName) => {
@@ -45,25 +46,27 @@ class EnterForm extends React.Component {
   
   render() {
     const { user, roomName } = this.state;
-    return (
-      <form id="enter-room-form" onSubmit={this.handleSubmit}>
-        <input
-          type="text"
-          placeholder="Имя"
-          id="user"
-          value={user}
-          onChange={this.handleInputChange}
-        />
-        <input
-          type="text"
-          placeholder="Название комнаты"
-          id="roomName"
-          value={roomName}
-          onChange={this.handleInputChange}
-        />
-        <button type="submit">Войти</button>
-      </form>
-    );
+    if(!this.props.roomName){
+      return (
+        <form id="enter-room-form" onSubmit={this.handleSubmit}>
+          <input
+            type="text"
+            placeholder="Имя"
+            id="user"
+            value={user}
+            onChange={this.handleInputChange}
+          />
+          <input
+            type="text"
+            placeholder="Название комнаты"
+            id="roomName"
+            value={roomName}
+            onChange={this.handleInputChange}
+          />
+          <button type="submit">Войти</button>
+        </form>
+      );
+    }
   }
 }
 

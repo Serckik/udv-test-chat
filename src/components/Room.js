@@ -14,6 +14,9 @@ class Room extends React.Component {
             selectedImage: null,
             imageUrl:null
         }
+
+        this.enterFormRef = null
+
         this.handleExitClick = this.handleExitClick.bind(this);
         this.handleEmojiSelect = this.handleEmojiSelect.bind(this);
         this.makeQuote = this.makeQuote.bind(this);
@@ -55,11 +58,9 @@ class Room extends React.Component {
 
     render() {
         let { roomName, chat, user, onUpdate } = this.props;
-
-        if (roomName === '') {
-        return <h2>Войдите в комнату</h2>;
+        if (roomName === null) {
+            return <h2>Войдите в комнату</h2>;
         }
-        document.getElementById('enter-room-form')
         const existingData = chat || [];
         return (
         <div className="room">
@@ -99,7 +100,7 @@ class Room extends React.Component {
             <button
                 type="button"
                 onClick={() => {
-                    if(this.state.text === ''){
+                    if(this.state.text === '' && this.state.imageUrl === null){
                         return
                     }
                     const id = existingData.length === 0 ? 1 : existingData[existingData.length - 1].id + 1;

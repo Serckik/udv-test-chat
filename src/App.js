@@ -6,15 +6,17 @@ import Room from "./components/Room";
 class App extends React.Component{
   constructor(props){
       super(props)
+      const userData =  JSON.parse(localStorage.getItem('userData'))
       this.state = {
-        roomName: "",
-        currentChat: []
+        roomName: userData === null ? null : userData.roomName,
+        user: userData === null ? null : userData.user,
+        currentChat: userData === null ? [] : JSON.parse(localStorage.getItem(userData.roomName))
       };
+
       this.EnterRoom = this.EnterRoom.bind(this);
       this.UpdateChat = this.UpdateChat.bind(this);
       this.ExitChat = this.ExitChat.bind(this);
   }
-
   componentDidMount() {
     window.addEventListener('storage', this.UpdateChat);
   }
@@ -31,7 +33,7 @@ class App extends React.Component{
         </header>
         <main className='App-main'>
           <Room onUpdate={this.UpdateChat} onExit={this.ExitChat} chat={this.state.currentChat} roomName={this.state.roomName} user={this.state.user}/>
-          <EnterForm onEnter={this.EnterRoom} />
+          <EnterForm onEnter={this.EnterRoom} roomName = {this.state.roomName} />
         </main>
       </div>
     );
@@ -66,11 +68,11 @@ class App extends React.Component{
   }
 
   ExitChat(){
+    let newData = { user: null, roomName: null };
+    localStorage.setItem('userData', JSON.stringify(newData));
     this.setState({ 
-      roomName: '', 
+      roomName: null, 
       currentChat: [],
-    }, () => {
-      document.getElementById("enter-room-form").hidden = false;
     })
   }
 }
