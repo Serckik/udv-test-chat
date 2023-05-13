@@ -45,7 +45,6 @@ class App extends React.Component{
       currentChat: chat,
       user: user
     }, () =>{
-      console.log(this.state.roomName)
       let div = document.querySelector('.chat')
       div.scrollTop = div.scrollHeight;
     });
